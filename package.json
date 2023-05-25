@@ -5,8 +5,11 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/src/server.js",
-    "dev": "nodemon src/server.ts"
+    "start": "npm run prisma:migrate:deploy && node dist/src/server.js",
+    "dev": "NODE_ENV=development nodemon --watch 'src/' --exec 'ts-node ./src/server.ts' -e ts",
+    "dev:load-envs": "dotenv -e .env.development",
+    "prisma:migrate:dev": "npm run dev:load-envs prisma migrate dev",
+    "prisma:migrate:deploy": "prisma migrate deploy"
   },
   "keywords": [],
   "author": "",
