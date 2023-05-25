@@ -1,4 +1,4 @@
-import { CreateUserParams } from 'protocols';
+import { CreateUserParams } from '../../protocols';
 import { prisma } from '../../config';
 
 async function findByEmail(email: string) {
