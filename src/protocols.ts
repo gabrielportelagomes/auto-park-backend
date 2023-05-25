@@ -19,3 +19,5 @@ export type SignInResponse = {
   email: string;
   token: string;
 };
+
+export type CreateSessionParams = Omit<SignInResponse, 'email'>;
