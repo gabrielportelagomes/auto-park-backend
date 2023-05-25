@@ -1,7 +1,8 @@
+import bcrypt from 'bcrypt';
+
 import usersRepository from '../../repositories/users-repository';
 import { conflictError } from '../../errors';
 import { CreateUserParams, SignUpResponse } from '../../protocols';
-import bcrypt from 'bcrypt';
 
 export async function createUser({ email, password }: CreateUserParams): Promise<SignUpResponse> {
   await validateUniqueEmailOrFail(email);

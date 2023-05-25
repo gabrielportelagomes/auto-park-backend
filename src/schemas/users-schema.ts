@@ -1,4 +1,5 @@
 import Joi from 'joi';
+
 import { CreateUserParams } from '../protocols';
 
 export const createUserSchema = Joi.object<CreateUserParams>({
