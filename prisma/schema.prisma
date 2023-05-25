@@ -11,11 +11,23 @@ datasource db {
 }
 
 model User {
+  id         Int       @id @default(autoincrement())
+  email      String    @unique @db.VarChar(255)
+  password   String    @db.VarChar(255)
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  Session    Session[]
+
+  @@map("users")
+}
+
+model Session {
   id         Int      @id @default(autoincrement())
-  email      String   @unique @db.VarChar(255)
-  password   String   @db.VarChar(255)
+  user_id    Int
+  User       User     @relation(fields: [user_id], references: [id])
+  token      String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  @@map("users")
+  @@map("sessions")
 }
