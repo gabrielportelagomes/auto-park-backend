@@ -11,3 +11,13 @@ export type CreateUserParams = {
 };
 
 export type SignUpResponse = Pick<User, 'id' | 'email'>;
+
+export type SignInParams = CreateUserParams;
+
+export type SignInResponse = {
+  user_id: number;
+  email: string;
+  token: string;
+};
+
+export type CreateSessionParams = Omit<SignInResponse, 'email'>;
