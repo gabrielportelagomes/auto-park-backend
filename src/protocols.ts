@@ -11,3 +11,5 @@ export type CreateUserParams = {
 };
 
 export type SignUpResponse = Pick<User, 'id' | 'email'>;
+
+export type SignInParams = CreateUserParams;
