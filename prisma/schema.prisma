@@ -37,7 +37,7 @@ model Session {
 model CashItem {
   id           Int            @id @default(autoincrement())
   cash_type    CashType
-  value        Int
+  value        Int            @unique
   user_id      Int
   User         User           @relation(fields: [user_id], references: [id])
   created_at   DateTime       @default(now())
