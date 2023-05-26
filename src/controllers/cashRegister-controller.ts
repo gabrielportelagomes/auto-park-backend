@@ -1,4 +1,4 @@
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 
 import { CreateCashRegister, CreateCashRegisterParams } from '../protocols';
@@ -22,6 +22,16 @@ export async function postCashRegister(req: AuthenticatedRequest, res: Response)
     if (error.name === 'ForbiddenError') {
       return res.status(httpStatus.FORBIDDEN).send(error);
     }
+    return res.status(httpStatus.NOT_FOUND).send(error);
+  }
+}
+
+export async function getCashRegisterBalance(req: Request, res: Response) {
+  try {
+    const registersBalance = await cashRegisterService.cashRegisterBalance();
+
+    return res.status(httpStatus.CREATED).send(registersBalance);
+  } catch (error) {
     return res.status(httpStatus.NOT_FOUND).send(error);
   }
 }
