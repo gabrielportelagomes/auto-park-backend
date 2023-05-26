@@ -21,3 +21,12 @@ export type SignInResponse = {
 };
 
 export type CreateSessionParams = Omit<SignInResponse, 'email'>;
+
+export type CreateCashItemParams = {
+  cash_type: 'COIN' | 'NOTE';
+  value: number;
+};
+
+export type CreateCashItem = CreateCashItemParams & {
+  user_id: number;
+};
