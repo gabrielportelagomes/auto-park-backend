@@ -70,8 +70,29 @@ async function createCashRegister(cashRegisters: CreateCashRegister[]): Promise<
   return registersCount;
 }
 
+async function cashRegisterBalance() {
+  const balance = await cashBalance();
+
+  if (Object.keys(balance).length === 0) {
+    throw notFoundError();
+  }
+
+  const cashItemIds = Object.keys(balance).map(Number);
+  const cashItems = await cashItemRepository.findManyById(cashItemIds);
+
+  const registersBalance = cashItems.map((cashItem) => {
+    const { created_at, updated_at, user_id, ...rest } = cashItem;
+    const quantity = balance[cashItem.id] || 0;
+    const amount = quantity * cashItem.value;
+    return { ...rest, quantity, amount };
+  });
+
+  return registersBalance;
+}
+
 const cashRegisterService = {
   createCashRegister,
+  cashRegisterBalance,
 };
 
 export default cashRegisterService;
