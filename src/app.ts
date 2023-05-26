@@ -6,7 +6,7 @@ import cors from 'cors';
 import { loadEnv, connectDb, disconnectDB } from './config';
 import { ApplicationError } from './protocols';
 import { handleApplicationErrors } from './middlewares';
-import { authenticationRouter, usersRouter } from './routers';
+import { authenticationRouter, cashItemRouter, usersRouter } from './routers';
 
 loadEnv();
 
@@ -18,6 +18,7 @@ app
   .get('/health', (_req: Request, res: Response) => res.send('OK!'))
   .use('/users', usersRouter)
   .use('/auth', authenticationRouter)
+  .use('/cash-item', cashItemRouter)
   .use((err: Error | ApplicationError, req: Request, res: Response, next: NextFunction) => {
     handleApplicationErrors(err, res);
   });
