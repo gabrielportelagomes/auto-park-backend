@@ -17,10 +17,30 @@ async function findAll() {
   return await prisma.cashItem.findMany();
 }
 
+async function findManyById(cashItemIds: number[]) {
+  return prisma.cashItem.findMany({
+    where: {
+      id: {
+        in: cashItemIds,
+      },
+    },
+  });
+}
+
+async function findById(id: number) {
+  return prisma.cashItem.findUnique({
+    where: {
+      id,
+    },
+  });
+}
+
 const cashItemRepository = {
   findByValue,
   create,
   findAll,
+  findManyById,
+  findById,
 };
 
 export default cashItemRepository;
