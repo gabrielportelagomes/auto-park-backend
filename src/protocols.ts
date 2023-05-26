@@ -30,3 +30,14 @@ export type CreateCashItemParams = {
 export type CreateCashItem = CreateCashItemParams & {
   user_id: number;
 };
+
+export type CreateCashRegisterParams = {
+  cash_item_id: number;
+  quantity: number;
+  amount: number;
+  transaction_type: 'INFLOW' | 'OUTFLOW';
+};
+
+export type CreateCashRegister = CreateCashRegisterParams & {
+  user_id: number;
+};
