@@ -77,8 +77,7 @@ async function cashRegisterBalance() {
     throw notFoundError();
   }
 
-  const cashItemIds = Object.keys(balance).map(Number);
-  const cashItems = await cashItemRepository.findManyById(cashItemIds);
+  const cashItems = await cashItemRepository.findAll();
 
   const registersBalance = cashItems.map((cashItem) => {
     const { created_at, updated_at, user_id, ...rest } = cashItem;
