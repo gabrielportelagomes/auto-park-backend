@@ -18,7 +18,7 @@ async function checkCashItemExistence(cashRegisters: CreateCashRegister[]) {
   }
 }
 
-async function checkAvailability(cashRegisters: CreateCashRegister[]) {
+async function cashBalance() {
   const registersBalance = await cashRegisterRepository.registersBalance();
   const balance: { [cash_item_id: number]: number } = {};
 
@@ -41,6 +41,10 @@ async function checkAvailability(cashRegisters: CreateCashRegister[]) {
     }
   }
 
+  return balance;
+}
+
+async function checkAvailability(cashRegisters: CreateCashRegister[], balance: Record<string, number>) {
   for (const register of cashRegisters) {
     if (register.transaction_type === 'OUTFLOW') {
       const availableQuantity = balance[register.cash_item_id] || 0;
@@ -58,7 +62,8 @@ async function checkAvailability(cashRegisters: CreateCashRegister[]) {
 
 async function createCashRegister(cashRegisters: CreateCashRegister[]): Promise<Prisma.BatchPayload> {
   await checkCashItemExistence(cashRegisters);
-  await checkAvailability(cashRegisters);
+  const balance = await cashBalance();
+  await checkAvailability(cashRegisters, balance);
 
   const registersCount = await cashRegisterRepository.createMany(cashRegisters);
 
