@@ -1,8 +1,13 @@
 import { Router } from 'express';
 
 import { authenticateToken, validateBody, validateParams } from '../middlewares';
-import { createVehicleRegister, findVehicleRegisterByPlateNumber } from '../schemas';
-import { getAllVehicleRegisters, getVehicleRegisterByPlateNumber, postVehicleRegister } from '../controllers';
+import { createVehicleRegister, findVehicleRegisterByDate, findVehicleRegisterByPlateNumber } from '../schemas';
+import {
+  getAllVehicleRegisters,
+  getVehicleRegisterByPlateNumber,
+  getVehicleRegistersByDate,
+  postVehicleRegister,
+} from '../controllers';
 
 const vehicleRegisterRouter = Router();
 
@@ -14,5 +19,6 @@ vehicleRegisterRouter.get(
   validateParams(findVehicleRegisterByPlateNumber),
   getVehicleRegisterByPlateNumber,
 );
+vehicleRegisterRouter.get('/date/:date', validateParams(findVehicleRegisterByDate), getVehicleRegistersByDate);
 
 export { vehicleRegisterRouter };
