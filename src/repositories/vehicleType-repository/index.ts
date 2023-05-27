@@ -13,9 +13,14 @@ async function create(data: CreateVehicleType) {
   });
 }
 
+async function findAll() {
+  return await prisma.vehicleType.findMany();
+}
+
 const vehicleTypeRepository = {
   findByVehicleType,
   create,
+  findAll,
 };
 
 export default vehicleTypeRepository;
