@@ -50,9 +50,20 @@ async function findAllVehicleRegisters(): Promise<VehicleRegister[]> {
   return registers;
 }
 
+async function findVehicleRegisterByPlateNumber(plate_number: string): Promise<VehicleRegister> {
+  const register = await vehicleRegisterRepository.findByPlateNumber(plate_number);
+
+  if (!register) {
+    throw notFoundError();
+  }
+
+  return register;
+}
+
 const vehicleRegisterService = {
   createVehicleRegister,
   findAllVehicleRegisters,
+  findVehicleRegisterByPlateNumber,
 };
 
 export default vehicleRegisterService;
