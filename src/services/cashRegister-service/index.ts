@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client';
 import cashItemRepository from '../../repositories/cashItem-repository';
-import { CreateCashRegister } from '../../protocols';
+import { ChangeDetails, CreateCashRegister, CreateChangeAvailabilityParams, RegistersBalance } from '../../protocols';
 import { forbiddenError, notFoundError } from '../../errors';
 import cashRegisterRepository from '../../repositories/cashRegister-repository';
 
@@ -18,7 +18,7 @@ async function checkCashItemExistence(cashRegisters: CreateCashRegister[]) {
   }
 }
 
-async function cashBalance() {
+async function cashBalance(): Promise<{ [cash_item_id: number]: number }> {
   const registersBalance = await cashRegisterRepository.registersBalance();
   const balance: { [cash_item_id: number]: number } = {};
 
@@ -70,7 +70,7 @@ async function createCashRegister(cashRegisters: CreateCashRegister[]): Promise<
   return registersCount;
 }
 
-async function cashRegisterBalance() {
+async function cashRegisterBalance(): Promise<RegistersBalance[]> {
   const balance = await cashBalance();
 
   if (Object.keys(balance).length === 0) {
@@ -89,9 +89,60 @@ async function cashRegisterBalance() {
   return registersBalance;
 }
 
+async function checkChangeAvailability(user_id: number, changeValue: number) {
+  const cashItems = await cashRegisterBalance();
+  const orderCashItems = cashItems.sort((a, b) => b.value - a.value);
+
+  const changeDetails: ChangeDetails[] = [];
+
+  for (const cashItem of orderCashItems) {
+    const { value, quantity } = cashItem;
+
+    if (quantity > 0 && value <= changeValue) {
+      const maxCount = Math.min(Math.floor(changeValue / value), quantity);
+
+      changeDetails.push({
+        quantity: maxCount,
+        amount: cashItem.value * maxCount,
+        cash_item_id: cashItem.id,
+        transaction_type: 'OUTFLOW',
+        user_id,
+      });
+
+      changeValue -= value * maxCount;
+
+      cashItem.quantity -= maxCount;
+    }
+
+    if (changeValue === 0) {
+      break;
+    }
+  }
+
+  if (changeValue !== 0) {
+    throw forbiddenError('Insufficient coins and notes in cash for change!');
+  }
+
+  return changeDetails;
+}
+
+export async function createChange(user_id: number, data: CreateChangeAvailabilityParams) {
+  if (data.total_paid < data.total_price) {
+    throw forbiddenError('Insufficient balance, the total paid is less than the total price!');
+  }
+
+  const changeValue = data.total_paid - data.total_price;
+
+  const changeDetails = await checkChangeAvailability(user_id, changeValue);
+  await cashRegisterRepository.createMany(changeDetails);
+
+  return changeDetails;
+}
+
 const cashRegisterService = {
   createCashRegister,
   cashRegisterBalance,
+  createChange,
 };
 
 export default cashRegisterService;
