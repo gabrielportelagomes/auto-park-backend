@@ -6,7 +6,14 @@ import cors from 'cors';
 import { loadEnv, connectDb, disconnectDB } from './config';
 import { ApplicationError } from './protocols';
 import { handleApplicationErrors } from './middlewares';
-import { authenticationRouter, cashItemRouter, cashRegisterRouter, usersRouter, vehicleTypeRouter } from './routers';
+import {
+  authenticationRouter,
+  cashItemRouter,
+  cashRegisterRouter,
+  usersRouter,
+  vehicleRegisterRouter,
+  vehicleTypeRouter,
+} from './routers';
 
 loadEnv();
 
@@ -21,6 +28,7 @@ app
   .use('/cash-item', cashItemRouter)
   .use('/cash-register', cashRegisterRouter)
   .use('/vehicle-type', vehicleTypeRouter)
+  .use('/vehicle-register', vehicleRegisterRouter)
   .use((err: Error | ApplicationError, req: Request, res: Response, next: NextFunction) => {
     handleApplicationErrors(err, res);
   });
