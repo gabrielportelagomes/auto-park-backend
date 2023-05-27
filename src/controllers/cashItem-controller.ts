@@ -18,11 +18,11 @@ export async function postCashItem(req: AuthenticatedRequest, res: Response) {
   }
 }
 
-export async function getAllCashItens(req: Request, res: Response) {
+export async function getAllCashItems(req: Request, res: Response) {
   try {
-    const cashItens = await cashService.findAllCashItens();
+    const cashItems = await cashService.findAllCashItems();
 
-    return res.status(httpStatus.CREATED).send(cashItens);
+    return res.status(httpStatus.CREATED).send(cashItems);
   } catch (error) {
     return res.status(httpStatus.NOT_FOUND).send(error);
   }

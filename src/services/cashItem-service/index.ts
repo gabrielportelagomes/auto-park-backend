@@ -15,19 +15,19 @@ async function createCashItem({ user_id, cash_type, value }: CreateCashItem): Pr
   return cashItem;
 }
 
-async function findAllCashItens(): Promise<CashItem[]> {
-  const cashItens = await cashItemRepository.findAll();
+async function findAllCashItems(): Promise<CashItem[]> {
+  const cashItems = await cashItemRepository.findAll();
 
-  if (cashItens.length === 0) {
+  if (cashItems.length === 0) {
     throw notFoundError();
   }
 
-  return cashItens;
+  return cashItems;
 }
 
 const cashService = {
   createCashItem,
-  findAllCashItens,
+  findAllCashItems,
 };
 
 export default cashService;
