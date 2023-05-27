@@ -17,10 +17,17 @@ async function findAll() {
   return await prisma.vehicleType.findMany();
 }
 
+async function findById(id: number) {
+  return await prisma.vehicleType.findUnique({
+    where: { id },
+  });
+}
+
 const vehicleTypeRepository = {
   findByVehicleType,
   create,
   findAll,
+  findById,
 };
 
 export default vehicleTypeRepository;
