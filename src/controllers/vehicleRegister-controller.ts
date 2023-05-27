@@ -1,7 +1,11 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 
-import { CreateVehicleRegisterParams, FindVehicleRegisterByPlateNumberParams } from '../protocols';
+import {
+  CreateVehicleRegisterParams,
+  FindVehicleRegisterByDateParams,
+  FindVehicleRegisterByPlateNumberParams,
+} from '../protocols';
 import { AuthenticatedRequest } from '../middlewares';
 import vehicleRegisterService from '../services/vehicleRegister-service';
 
@@ -42,6 +46,18 @@ export async function getVehicleRegisterByPlateNumber(req: Request, res: Respons
 
   try {
     const registers = await vehicleRegisterService.findVehicleRegisterByPlateNumber(plateNumberUpperCase);
+
+    return res.status(httpStatus.OK).send(registers);
+  } catch (error) {
+    return res.status(httpStatus.NOT_FOUND).send(error);
+  }
+}
+
+export async function getVehicleRegistersByDate(req: Request, res: Response) {
+  const { date } = req.params as FindVehicleRegisterByDateParams;
+
+  try {
+    const registers = await vehicleRegisterService.findVehicleRegistersByDate(date);
 
     return res.status(httpStatus.OK).send(registers);
   } catch (error) {
