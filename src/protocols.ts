@@ -1,4 +1,4 @@
-import { User } from '@prisma/client';
+import { CashType, User } from '@prisma/client';
 
 export type ApplicationError = {
   name: string;
@@ -39,5 +39,28 @@ export type CreateCashRegisterParams = {
 };
 
 export type CreateCashRegister = CreateCashRegisterParams & {
+  user_id: number;
+};
+
+export type RegistersBalance = {
+  quantity: number;
+  amount: number;
+  id: number;
+  cash_type: CashType;
+  value: number;
+};
+
+export type CreateInflowCashRegisterParams = Omit<CreateCashRegisterParams, 'transaction_type'> & {
+  transaction_type: 'INFLOW';
+};
+
+export type CreateChangeAvailabilityParams = {
+  total_price: number;
+  total_paid: number;
+  cash_register: CreateInflowCashRegisterParams[];
+};
+
+export type ChangeDetails = Omit<CreateCashRegisterParams, 'transaction_type'> & {
+  transaction_type: 'OUTFLOW';
   user_id: number;
 };
