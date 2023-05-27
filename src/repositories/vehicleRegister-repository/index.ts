@@ -19,10 +19,23 @@ async function findAll() {
   });
 }
 
+async function findByEntryTime(startDate: Date, endDate: Date) {
+  return await prisma.vehicleRegister.findMany({
+    where: {
+      entry_time: {
+        gte: startDate,
+        lte: endDate,
+      },
+    },
+    orderBy: [{ exit_time: 'asc' }, { entry_time: 'asc' }],
+  });
+}
+
 const vehicleRegisterRepository = {
   findByPlateNumber,
   create,
   findAll,
+  findByEntryTime,
 };
 
 export default vehicleRegisterRepository;
