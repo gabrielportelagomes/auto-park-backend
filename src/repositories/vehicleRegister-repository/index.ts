@@ -13,9 +13,16 @@ async function create(data: CreateVehicleRegister) {
   });
 }
 
+async function findAll() {
+  return await prisma.vehicleRegister.findMany({
+    orderBy: [{ exit_time: 'asc' }, { entry_time: 'asc' }],
+  });
+}
+
 const vehicleRegisterRepository = {
   findByPlateNumber,
   create,
+  findAll,
 };
 
 export default vehicleRegisterRepository;
