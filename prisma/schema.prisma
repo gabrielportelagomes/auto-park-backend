@@ -11,14 +11,16 @@ datasource db {
 }
 
 model User {
-  id           Int            @id @default(autoincrement())
-  email        String         @unique @db.VarChar(255)
-  password     String         @db.VarChar(255)
-  created_at   DateTime       @default(now())
-  updated_at   DateTime       @updatedAt
-  Session      Session[]
-  CashItem     CashItem[]
-  CashRegister CashRegister[]
+  id              Int               @id @default(autoincrement())
+  email           String            @unique @db.VarChar(255)
+  password        String            @db.VarChar(255)
+  created_at      DateTime          @default(now())
+  updated_at      DateTime          @updatedAt
+  Session         Session[]
+  CashItem        CashItem[]
+  CashRegister    CashRegister[]
+  VehicleType     VehicleType[]
+  VehicleRegister VehicleRegister[]
 
   @@map("users")
 }
@@ -70,4 +72,33 @@ model CashRegister {
 enum TransactionType {
   INFLOW
   OUTFLOW
+}
+
+model VehicleType {
+  id              Int               @id @default(autoincrement())
+  vehicle_type    String            @unique @db.VarChar(255)
+  hour_hate       Int
+  user_id         Int
+  User            User              @relation(fields: [user_id], references: [id])
+  created_at      DateTime          @default(now())
+  updated_at      DateTime          @updatedAt
+  VehicleRegister VehicleRegister[]
+
+  @@map("vehicle_type")
+}
+
+model VehicleRegister {
+  id              Int         @id @default(autoincrement())
+  vehicle_type_id Int
+  VehicleType     VehicleType @relation(fields: [vehicle_type_id], references: [id])
+  plate_number    String
+  entry_time      DateTime
+  exit_time       DateTime?
+  paid_amount     Int?
+  user_id         Int
+  User            User        @relation(fields: [user_id], references: [id])
+  created_at      DateTime    @default(now())
+  updated_at      DateTime    @updatedAt
+
+  @@map("vehicle_register")
 }
