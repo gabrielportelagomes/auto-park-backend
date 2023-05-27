@@ -85,3 +85,7 @@ export type CreateVehicleRegister = CreateVehicleRegisterParams & {
 };
 
 export type FindVehicleRegisterByPlateNumberParams = Omit<CreateVehicleRegisterParams, 'vehicle_type_id'>;
+
+export type FindVehicleRegisterByDateParams = {
+  date: string;
+};
