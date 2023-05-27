@@ -40,8 +40,19 @@ async function validateVehicleType(vehicle_type_id: number) {
   }
 }
 
+async function findAllVehicleRegisters(): Promise<VehicleRegister[]> {
+  const registers = await vehicleRegisterRepository.findAll();
+
+  if (registers.length === 0) {
+    throw notFoundError();
+  }
+
+  return registers;
+}
+
 const vehicleRegisterService = {
   createVehicleRegister,
+  findAllVehicleRegisters,
 };
 
 export default vehicleRegisterService;
