@@ -1,4 +1,4 @@
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 
 import { CreateVehicleTypeParams } from '../protocols';
@@ -16,5 +16,15 @@ export async function postVehicleType(req: AuthenticatedRequest, res: Response) 
     return res.status(httpStatus.CREATED).send(vehicleType);
   } catch (error) {
     return res.status(httpStatus.CONFLICT).send(error);
+  }
+}
+
+export async function getAllVehicleTypes(req: Request, res: Response) {
+  try {
+    const vehicleType = await vehicleTypeService.findAllVehicleTypes();
+
+    return res.status(httpStatus.OK).send(vehicleType);
+  } catch (error) {
+    return res.status(httpStatus.NOT_FOUND).send(error);
   }
 }
