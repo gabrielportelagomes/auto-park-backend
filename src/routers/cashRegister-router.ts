@@ -1,13 +1,14 @@
 import { Router } from 'express';
 
 import { authenticateToken, validateBody } from '../middlewares';
-import { createCahsRegister } from '../schemas';
-import { getCashRegisterBalance, postCashRegister } from '../controllers';
+import { createCahsRegister, createChangeAvailability } from '../schemas';
+import { getCashRegisterBalance, postCashRegister, postChange } from '../controllers';
 
 const cashRegisterRouter = Router();
 
-cashRegisterRouter.all('/', authenticateToken);
+cashRegisterRouter.all('/*', authenticateToken);
 cashRegisterRouter.post('/', validateBody(createCahsRegister), postCashRegister);
 cashRegisterRouter.get('/', getCashRegisterBalance);
+cashRegisterRouter.post('/change', validateBody(createChangeAvailability), postChange);
 
 export { cashRegisterRouter };
