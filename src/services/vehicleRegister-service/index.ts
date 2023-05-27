@@ -60,10 +60,27 @@ async function findVehicleRegisterByPlateNumber(plate_number: string): Promise<V
   return register;
 }
 
+async function findVehicleRegistersByDate(date: string): Promise<VehicleRegister[]> {
+  const startDate = new Date(date);
+  startDate.setUTCHours(0, 0, 0, 0);
+
+  const endDate = new Date(date);
+  endDate.setUTCHours(23, 59, 59, 999);
+
+  const registers = await vehicleRegisterRepository.findByEntryTime(startDate, endDate);
+
+  if (registers.length === 0) {
+    throw notFoundError();
+  }
+
+  return registers;
+}
+
 const vehicleRegisterService = {
   createVehicleRegister,
   findAllVehicleRegisters,
   findVehicleRegisterByPlateNumber,
+  findVehicleRegistersByDate,
 };
 
 export default vehicleRegisterService;
