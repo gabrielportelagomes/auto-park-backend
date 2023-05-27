@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 
-import { CreateCashRegister, CreateCashRegisterParams } from '../protocols';
+import { CreateCashRegister, CreateCashRegisterParams, CreateChangeAvailabilityParams } from '../protocols';
 import { AuthenticatedRequest } from '../middlewares';
 import cashRegisterService from '../services/cashRegister-service';
 
@@ -32,6 +32,22 @@ export async function getCashRegisterBalance(req: Request, res: Response) {
 
     return res.status(httpStatus.CREATED).send(registersBalance);
   } catch (error) {
+    return res.status(httpStatus.NOT_FOUND).send(error);
+  }
+}
+
+export async function postChange(req: AuthenticatedRequest, res: Response) {
+  const { user_id } = req;
+  const body = req.body as CreateChangeAvailabilityParams;
+
+  try {
+    const registersBalance = await cashRegisterService.createChange(user_id, body);
+
+    return res.status(httpStatus.CREATED).send(registersBalance);
+  } catch (error) {
+    if (error.name === 'ForbiddenError') {
+      return res.status(httpStatus.FORBIDDEN).send(error);
+    }
     return res.status(httpStatus.NOT_FOUND).send(error);
   }
 }
