@@ -64,3 +64,12 @@ export type ChangeDetails = Omit<CreateCashRegisterParams, 'transaction_type'> &
   transaction_type: 'OUTFLOW';
   user_id: number;
 };
+
+export type CreateVehicleTypeParams = {
+  vehicle_type: string;
+  hour_hate: number;
+};
+
+export type CreateVehicleType = CreateVehicleTypeParams & {
+  user_id: number;
+};
