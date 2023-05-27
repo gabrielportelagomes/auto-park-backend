@@ -73,3 +73,13 @@ export type CreateVehicleTypeParams = {
 export type CreateVehicleType = CreateVehicleTypeParams & {
   user_id: number;
 };
+
+export type CreateVehicleRegisterParams = {
+  vehicle_type_id: number;
+  plate_number: string;
+};
+
+export type CreateVehicleRegister = CreateVehicleRegisterParams & {
+  user_id: number;
+  entry_time: Date;
+};
