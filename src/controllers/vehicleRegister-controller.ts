@@ -1,4 +1,4 @@
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 
 import { CreateVehicleRegisterParams } from '../protocols';
@@ -11,17 +11,27 @@ export async function postVehicleRegister(req: AuthenticatedRequest, res: Respon
   const plateNumberUpperCase = plate_number.toLocaleUpperCase();
 
   try {
-    const vehicleType = await vehicleRegisterService.createVehicleRegister(
+    const vehicleRegister = await vehicleRegisterService.createVehicleRegister(
       user_id,
       vehicle_type_id,
       plateNumberUpperCase,
     );
 
-    return res.status(httpStatus.CREATED).send(vehicleType);
+    return res.status(httpStatus.CREATED).send(vehicleRegister);
   } catch (error) {
     if (error.name === 'NotFoundError') {
       return res.status(httpStatus.NOT_FOUND).send(error);
     }
     return res.status(httpStatus.CONFLICT).send(error);
+  }
+}
+
+export async function getAllVehicleRegisters(req: Request, res: Response) {
+  try {
+    const registers = await vehicleRegisterService.findAllVehicleRegisters();
+
+    return res.status(httpStatus.OK).send(registers);
+  } catch (error) {
+    return res.status(httpStatus.NOT_FOUND).send(error);
   }
 }
