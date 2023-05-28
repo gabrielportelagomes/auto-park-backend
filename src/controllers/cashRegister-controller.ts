@@ -30,7 +30,7 @@ export async function getCashRegisterBalance(req: Request, res: Response) {
   try {
     const registersBalance = await cashRegisterService.cashRegisterBalance();
 
-    return res.status(httpStatus.CREATED).send(registersBalance);
+    return res.status(httpStatus.OK).send(registersBalance);
   } catch (error) {
     return res.status(httpStatus.NOT_FOUND).send(error);
   }

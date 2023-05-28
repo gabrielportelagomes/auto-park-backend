@@ -22,7 +22,7 @@ export async function getAllCashItems(req: Request, res: Response) {
   try {
     const cashItems = await cashService.findAllCashItems();
 
-    return res.status(httpStatus.CREATED).send(cashItems);
+    return res.status(httpStatus.OK).send(cashItems);
   } catch (error) {
     return res.status(httpStatus.NOT_FOUND).send(error);
   }
