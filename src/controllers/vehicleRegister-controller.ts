@@ -5,6 +5,7 @@ import {
   CreateVehicleRegisterParams,
   FindVehicleRegisterByDateParams,
   FindVehicleRegisterByPlateNumberParams,
+  PatchVehicleRegisterIdParams,
 } from '../protocols';
 import { AuthenticatedRequest } from '../middlewares';
 import vehicleRegisterService from '../services/vehicleRegister-service';
@@ -61,6 +62,23 @@ export async function getVehicleRegistersByDate(req: Request, res: Response) {
 
     return res.status(httpStatus.OK).send(registers);
   } catch (error) {
+    return res.status(httpStatus.NOT_FOUND).send(error);
+  }
+}
+
+export async function patchVehicleRegister(req: AuthenticatedRequest, res: Response) {
+  const { user_id } = req;
+  const { id } = req.params as PatchVehicleRegisterIdParams;
+  const vehicleRegisterId = Number(id);
+
+  try {
+    const registers = await vehicleRegisterService.updateVehicleRegister(user_id, vehicleRegisterId);
+
+    return res.status(httpStatus.OK).send(registers);
+  } catch (error) {
+    if (error.name === 'ForbiddenError') {
+      return res.status(httpStatus.FORBIDDEN).send(error);
+    }
     return res.status(httpStatus.NOT_FOUND).send(error);
   }
 }
