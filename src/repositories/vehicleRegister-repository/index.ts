@@ -1,4 +1,4 @@
-import { CreateVehicleRegister } from '../../protocols';
+import { CreateVehicleRegister, UpdateVehicleRegister } from '../../protocols';
 import { prisma } from '../../config';
 
 async function findByPlateNumber(plate_number: string) {
@@ -31,11 +31,29 @@ async function findByEntryTime(startDate: Date, endDate: Date) {
   });
 }
 
+async function findById(id: number) {
+  return await prisma.vehicleRegister.findUnique({
+    where: { id },
+    include: {
+      VehicleType: true,
+    },
+  });
+}
+
+async function update(id: number, data: UpdateVehicleRegister) {
+  return await prisma.vehicleRegister.update({
+    where: { id },
+    data,
+  });
+}
+
 const vehicleRegisterRepository = {
   findByPlateNumber,
   create,
   findAll,
   findByEntryTime,
+  findById,
+  update,
 };
 
 export default vehicleRegisterRepository;
