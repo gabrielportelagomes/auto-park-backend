@@ -19,6 +19,13 @@ async function findAll() {
   });
 }
 
+async function findActive() {
+  return await prisma.vehicleRegister.findMany({
+    where: { exit_time: null },
+    orderBy: [{ entry_time: 'asc' }],
+  });
+}
+
 async function findByEntryTime(startDate: Date, endDate: Date) {
   return await prisma.vehicleRegister.findMany({
     where: {
@@ -51,6 +58,7 @@ const vehicleRegisterRepository = {
   findByPlateNumber,
   create,
   findAll,
+  findActive,
   findByEntryTime,
   findById,
   update,
