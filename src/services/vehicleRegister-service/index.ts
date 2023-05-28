@@ -1,5 +1,5 @@
 import vehicleRegisterRepository from '../../repositories/vehicleRegister-repository';
-import { conflictError, notFoundError } from '../../errors';
+import { conflictError, forbiddenError, notFoundError } from '../../errors';
 import vehicleTypeRepository from '../../repositories/vehicleType-repository';
 import { VehicleRegister } from '@prisma/client';
 
@@ -76,11 +76,36 @@ async function findVehicleRegistersByDate(date: string): Promise<VehicleRegister
   return registers;
 }
 
+async function updateVehicleRegister(user_id: number, id: number) {
+  const register = await vehicleRegisterRepository.findById(id);
+
+  if (!register) {
+    throw notFoundError();
+  }
+
+  if (register.exit_time) {
+    throw forbiddenError('This register is not active!');
+  }
+
+  const exit_time: Date = new Date();
+  exit_time.setHours(exit_time.getHours() - 3);
+
+  const entry_time: Date = new Date(register.entry_time);
+  const diff = Math.abs(exit_time.getTime() - entry_time.getTime());
+  const hours = diff / (1000 * 60 * 60);
+  const paid_amount = Math.round((hours * register.VehicleType.hour_hate) / 5) * 5;
+
+  const registerUpdated = vehicleRegisterRepository.update(id, { user_id, exit_time, paid_amount });
+
+  return registerUpdated;
+}
+
 const vehicleRegisterService = {
   createVehicleRegister,
   findAllVehicleRegisters,
   findVehicleRegisterByPlateNumber,
   findVehicleRegistersByDate,
+  updateVehicleRegister,
 };
 
 export default vehicleRegisterService;
