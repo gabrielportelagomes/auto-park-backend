@@ -64,3 +64,38 @@ export type ChangeDetails = Omit<CreateCashRegisterParams, 'transaction_type'> &
   transaction_type: 'OUTFLOW';
   user_id: number;
 };
+
+export type CreateVehicleTypeParams = {
+  vehicle_type: string;
+  hour_hate: number;
+};
+
+export type CreateVehicleType = CreateVehicleTypeParams & {
+  user_id: number;
+};
+
+export type CreateVehicleRegisterParams = {
+  vehicle_type_id: number;
+  plate_number: string;
+};
+
+export type CreateVehicleRegister = CreateVehicleRegisterParams & {
+  user_id: number;
+  entry_time: Date;
+};
+
+export type FindVehicleRegisterByPlateNumberParams = Omit<CreateVehicleRegisterParams, 'vehicle_type_id'>;
+
+export type FindVehicleRegisterByDateParams = {
+  date: string;
+};
+
+export type PatchVehicleRegisterIdParams = {
+  id: string;
+};
+
+export type UpdateVehicleRegister = {
+  exit_time: Date;
+  paid_amount: number;
+  user_id: number;
+};
