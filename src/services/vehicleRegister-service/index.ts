@@ -50,6 +50,16 @@ async function findAllVehicleRegisters(): Promise<VehicleRegister[]> {
   return registers;
 }
 
+async function findActiveVehicleRegisters(): Promise<VehicleRegister[]> {
+  const registers = await vehicleRegisterRepository.findActive();
+
+  if (registers.length === 0) {
+    throw notFoundError();
+  }
+
+  return registers;
+}
+
 async function findVehicleRegisterByPlateNumber(plate_number: string): Promise<VehicleRegister> {
   const register = await vehicleRegisterRepository.findByPlateNumber(plate_number);
 
@@ -103,6 +113,7 @@ async function updateVehicleRegister(user_id: number, id: number) {
 const vehicleRegisterService = {
   createVehicleRegister,
   findAllVehicleRegisters,
+  findActiveVehicleRegisters,
   findVehicleRegisterByPlateNumber,
   findVehicleRegistersByDate,
   updateVehicleRegister,
