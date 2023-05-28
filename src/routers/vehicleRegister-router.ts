@@ -1,11 +1,17 @@
 import { Router } from 'express';
 
 import { authenticateToken, validateBody, validateParams } from '../middlewares';
-import { createVehicleRegister, findVehicleRegisterByDate, findVehicleRegisterByPlateNumber } from '../schemas';
+import {
+  createVehicleRegister,
+  findVehicleRegisterByDate,
+  findVehicleRegisterByPlateNumber,
+  patchVehicleRegisterId,
+} from '../schemas';
 import {
   getAllVehicleRegisters,
   getVehicleRegisterByPlateNumber,
   getVehicleRegistersByDate,
+  patchVehicleRegister,
   postVehicleRegister,
 } from '../controllers';
 
@@ -20,5 +26,6 @@ vehicleRegisterRouter.get(
   getVehicleRegisterByPlateNumber,
 );
 vehicleRegisterRouter.get('/date/:date', validateParams(findVehicleRegisterByDate), getVehicleRegistersByDate);
+vehicleRegisterRouter.patch('/:id', validateParams(patchVehicleRegisterId), patchVehicleRegister);
 
 export { vehicleRegisterRouter };
