@@ -4,6 +4,7 @@ import {
   CreateVehicleRegisterParams,
   FindVehicleRegisterByDateParams,
   FindVehicleRegisterByPlateNumberParams,
+  PatchVehicleRegisterIdParams,
 } from '../protocols';
 
 export const createVehicleRegister = Joi.object<CreateVehicleRegisterParams>({
@@ -17,4 +18,8 @@ export const findVehicleRegisterByPlateNumber = Joi.object<FindVehicleRegisterBy
 
 export const findVehicleRegisterByDate = Joi.object<FindVehicleRegisterByDateParams>({
   date: Joi.date().iso().required(),
+});
+
+export const patchVehicleRegisterId = Joi.object<PatchVehicleRegisterIdParams>({
+  id: Joi.number().integer().required(),
 });

@@ -89,3 +89,13 @@ export type FindVehicleRegisterByPlateNumberParams = Omit<CreateVehicleRegisterP
 export type FindVehicleRegisterByDateParams = {
   date: string;
 };
+
+export type PatchVehicleRegisterIdParams = {
+  id: string;
+};
+
+export type UpdateVehicleRegister = {
+  exit_time: Date;
+  paid_amount: number;
+  user_id: number;
+};
