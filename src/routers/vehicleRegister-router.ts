@@ -8,6 +8,7 @@ import {
   patchVehicleRegisterId,
 } from '../schemas';
 import {
+  getActiveVehicleRegisters,
   getAllVehicleRegisters,
   getVehicleRegisterByPlateNumber,
   getVehicleRegistersByDate,
@@ -20,6 +21,7 @@ const vehicleRegisterRouter = Router();
 vehicleRegisterRouter.all('/*', authenticateToken);
 vehicleRegisterRouter.post('/', validateBody(createVehicleRegister), postVehicleRegister);
 vehicleRegisterRouter.get('/all', getAllVehicleRegisters);
+vehicleRegisterRouter.get('/active', getActiveVehicleRegisters);
 vehicleRegisterRouter.get(
   '/:plate_number',
   validateParams(findVehicleRegisterByPlateNumber),
