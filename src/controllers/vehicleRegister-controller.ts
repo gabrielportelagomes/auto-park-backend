@@ -41,6 +41,16 @@ export async function getAllVehicleRegisters(req: Request, res: Response) {
   }
 }
 
+export async function getActiveVehicleRegisters(req: Request, res: Response) {
+  try {
+    const registers = await vehicleRegisterService.findActiveVehicleRegisters();
+
+    return res.status(httpStatus.OK).send(registers);
+  } catch (error) {
+    return res.status(httpStatus.NOT_FOUND).send(error);
+  }
+}
+
 export async function getVehicleRegisterByPlateNumber(req: Request, res: Response) {
   const { plate_number } = req.params as FindVehicleRegisterByPlateNumberParams;
   const plateNumberUpperCase = plate_number.toLocaleUpperCase();
