@@ -5,6 +5,7 @@ import { createSession, createUser } from './factories';
 import { User } from '@prisma/client';
 
 export async function cleanDb() {
+  await prisma.cashRegister.deleteMany({});
   await prisma.cashItem.deleteMany({});
   await prisma.session.deleteMany({});
   await prisma.user.deleteMany({});
