@@ -8,7 +8,7 @@ const cashRegisterRouter = Router();
 
 cashRegisterRouter.all('/*', authenticateToken);
 cashRegisterRouter.post('/', validateBody(createCahsRegister), postCashRegister);
-cashRegisterRouter.get('/', getCashRegisterBalance);
+cashRegisterRouter.get('/balance', getCashRegisterBalance);
 cashRegisterRouter.post('/change', validateBody(createChangeAvailability), postChange);
 
 export { cashRegisterRouter };
