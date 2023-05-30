@@ -167,7 +167,7 @@ describe('GET /cash-register/balance', () => {
       expect(response.body).toEqual(notFoundError());
     });
 
-    it('should respond with status 201 and cash registers data', async () => {
+    it('should respond with status 200 and cash registers data', async () => {
       const user = await createUser();
       const token = await generateValidToken(user);
       const cashItem = await createCashItem(user.id);
