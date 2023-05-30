@@ -4,13 +4,13 @@ import httpStatus from 'http-status';
 import { ApplicationError } from '../protocols';
 
 export function handleApplicationErrors(err: ApplicationError | Error, res: Response) {
-  if (err.name === 'CannotEnrollBeforeStartDateError') {
-    return res.status(httpStatus.BAD_REQUEST).send({
+  if (err.name === 'ForbiddenError') {
+    return res.status(httpStatus.FORBIDDEN).send({
       message: err.message,
     });
   }
 
-  if (err.name === 'ConflictError' || err.name === 'DuplicatedEmailError') {
+  if (err.name === 'ConflictError') {
     return res.status(httpStatus.CONFLICT).send({
       message: err.message,
     });

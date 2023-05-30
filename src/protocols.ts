@@ -42,6 +42,21 @@ export type CreateCashRegister = CreateCashRegisterParams & {
   user_id: number;
 };
 
+export type CreateCashRegisterFactory = {
+  cash_item_id: number;
+  value: number;
+  transaction_type: 'INFLOW' | 'OUTFLOW';
+  user_id: number;
+};
+
+export type CreateManyCashRegisterFactory = {
+  cash_item_id: number;
+  quantity: number;
+  amount: number;
+  transaction_type: 'INFLOW' | 'OUTFLOW';
+  user_id: number;
+};
+
 export type RegistersBalance = {
   quantity: number;
   amount: number;

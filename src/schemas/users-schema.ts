@@ -6,7 +6,7 @@ export const createUserSchema = Joi.object<CreateUserParams>({
   email: Joi.string().email().required(),
   password: Joi.string()
     .min(8)
-    .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+$/)
+    .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&_*]*$/)
     .required()
     .messages({
       'string.min': 'The password must have a minimum of {#limit} characters',
