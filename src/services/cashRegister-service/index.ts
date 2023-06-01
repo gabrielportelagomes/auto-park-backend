@@ -73,11 +73,11 @@ async function createCashRegister(cashRegisters: CreateCashRegister[]): Promise<
 async function cashRegisterBalance(): Promise<RegistersBalance[]> {
   const balance = await cashBalance();
 
-  if (Object.keys(balance).length === 0) {
+  const cashItems = await cashItemRepository.findAll();
+
+  if (cashItems.length === 0) {
     throw notFoundError();
   }
-
-  const cashItems = await cashItemRepository.findAll();
 
   const registersBalance = cashItems.map((cashItem) => {
     const { created_at, updated_at, user_id, ...rest } = cashItem;
