@@ -7,6 +7,7 @@
     "build": "tsc",
     "start": "npm run prisma:migrate:deploy && node dist/src/server.js",
     "dev": "NODE_ENV=development nodemon --watch 'src/' --exec 'ts-node ./src/server.ts' -e ts",
+    "dev:seed": "npm run dev:load-envs prisma db seed",
     "dev:load-envs": "dotenv -e .env.development",
     "test": "dotenv -e .env.test npm run prisma:migrate:deploy & dotenv -e .env.test jest -- -i",
     "prisma:migrate:dev": "npm run dev:load-envs prisma migrate dev",
@@ -15,6 +16,9 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "prisma": {
+    "seed": "npm run dev:load-envs -- ts-node prisma/seed.ts"
+  },
   "devDependencies": {
     "@faker-js/faker": "^8.0.1",
     "@prisma/client": "^4.14.1",

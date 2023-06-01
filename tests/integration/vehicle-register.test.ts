@@ -71,7 +71,7 @@ describe('POST /vehicle-register', () => {
         vehicle_type_id: 0,
         plate_number: faker.string.alpha({ length: 4 }).toUpperCase() + faker.number.int({ min: 100, max: 999 }),
       };
-      
+
       const response = await server.post('/vehicle-register').set('Authorization', `Bearer ${token}`).send(body);
 
       expect(response.status).toBe(httpStatus.NOT_FOUND);
@@ -176,6 +176,14 @@ describe('GET /vehicle-register/all', () => {
           user_id: vehicleRegister.user_id,
           created_at: vehicleRegister.created_at.toISOString(),
           updated_at: vehicleRegister.updated_at.toISOString(),
+          VehicleType: {
+            id: vehicleType.id,
+            vehicle_type: vehicleType.vehicle_type,
+            hour_hate: vehicleType.hour_hate,
+            user_id: vehicleType.user_id,
+            created_at: vehicleType.created_at.toISOString(),
+            updated_at: vehicleType.updated_at.toISOString(),
+          },
         },
       ]);
     });
@@ -239,6 +247,14 @@ describe('GET /vehicle-register/active', () => {
           user_id: vehicleRegister.user_id,
           created_at: vehicleRegister.created_at.toISOString(),
           updated_at: vehicleRegister.updated_at.toISOString(),
+          VehicleType: {
+            id: vehicleType.id,
+            vehicle_type: vehicleType.vehicle_type,
+            hour_hate: vehicleType.hour_hate,
+            user_id: vehicleType.user_id,
+            created_at: vehicleType.created_at.toISOString(),
+            updated_at: vehicleType.updated_at.toISOString(),
+          },
         },
       ]);
     });
@@ -306,6 +322,14 @@ describe('GET /vehicle-register/:plate_number', () => {
         user_id: vehicleRegister.user_id,
         created_at: vehicleRegister.created_at.toISOString(),
         updated_at: vehicleRegister.updated_at.toISOString(),
+        VehicleType: {
+          id: vehicleType.id,
+          vehicle_type: vehicleType.vehicle_type,
+          hour_hate: vehicleType.hour_hate,
+          user_id: vehicleType.user_id,
+          created_at: vehicleType.created_at.toISOString(),
+          updated_at: vehicleType.updated_at.toISOString(),
+        },
       });
     });
   });
@@ -376,6 +400,14 @@ describe('GET /vehicle-register/date/:date', () => {
           user_id: vehicleRegister.user_id,
           created_at: vehicleRegister.created_at.toISOString(),
           updated_at: vehicleRegister.updated_at.toISOString(),
+          VehicleType: {
+            id: vehicleType.id,
+            vehicle_type: vehicleType.vehicle_type,
+            hour_hate: vehicleType.hour_hate,
+            user_id: vehicleType.user_id,
+            created_at: vehicleType.created_at.toISOString(),
+            updated_at: vehicleType.updated_at.toISOString(),
+          },
         },
       ]);
     });
