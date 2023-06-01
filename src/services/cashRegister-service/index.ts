@@ -86,7 +86,9 @@ async function cashRegisterBalance(): Promise<RegistersBalance[]> {
     return { ...rest, quantity, amount };
   });
 
-  return registersBalance;
+  const sortedRegistersBalance = registersBalance.sort((a, b) => a.value - b.value);
+
+  return sortedRegistersBalance;
 }
 
 async function checkChangeAvailability(user_id: number, changeValue: number) {
