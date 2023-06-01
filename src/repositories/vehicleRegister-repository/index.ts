@@ -3,6 +3,7 @@ import { prisma } from '../../config';
 
 async function findByPlateNumber(plate_number: string) {
   return await prisma.vehicleRegister.findFirst({
+    include: { VehicleType: true },
     where: { plate_number, exit_time: null },
   });
 }
@@ -15,6 +16,7 @@ async function create(data: CreateVehicleRegister) {
 
 async function findAll() {
   return await prisma.vehicleRegister.findMany({
+    include: { VehicleType: true },
     orderBy: [{ exit_time: 'asc' }, { entry_time: 'asc' }],
   });
 }
@@ -22,6 +24,7 @@ async function findAll() {
 async function findActive() {
   return await prisma.vehicleRegister.findMany({
     where: { exit_time: null },
+    include: { VehicleType: true },
     orderBy: [{ entry_time: 'asc' }],
   });
 }
@@ -34,6 +37,7 @@ async function findByEntryTime(startDate: Date, endDate: Date) {
         lte: endDate,
       },
     },
+    include: { VehicleType: true },
     orderBy: [{ exit_time: 'asc' }, { entry_time: 'asc' }],
   });
 }
