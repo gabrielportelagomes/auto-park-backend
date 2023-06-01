@@ -12,18 +12,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Configure Google Cloud SDK
-        uses: google-github-actions/setup-gcloud@v0.5.0
-        with:
-          version: '433.0.0'
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
-          service_account_key: ${{ secrets.GCP_SA_KEY }}
-      
       - name: Copy Google credentials
         run: |
           echo "$GCP_SA_KEY" > google-credentials.json
         env:
           GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Configure Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0.5.0
+        with:
+          version: '433.0.0'
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          credentials_json: google-credentials.json
+          create_credentials_file: true
 
       - name: Authenticate with Google Cloud
         run: gcloud auth activate-service-account --key-file=google-credentials.json
