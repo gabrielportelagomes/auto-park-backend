@@ -18,6 +18,12 @@ jobs:
           version: '433.0.0'
           project_id: ${{ secrets.GCP_PROJECT_ID }}
           service_account_key: ${{ secrets.GCP_SA_KEY }}
+      
+      - name: Copy Google credentials
+        run: |
+          echo "$GCP_SA_KEY" > google-credentials.json
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
 
       - name: Authenticate with Google Cloud
         run: gcloud auth activate-service-account --key-file=google-credentials.json
