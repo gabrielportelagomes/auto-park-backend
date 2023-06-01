@@ -1,0 +1,51 @@
+on:
+  push:
+    branches:
+      - main
+
+name: Build and Deploy Back-end
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Configure Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0.5.0
+        with:
+          version: '341.0.0'
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Authenticate with Google Cloud
+        run: gcloud auth activate-service-account --key-file=${{ secrets.GCP_SA_KEY }}
+
+      - name: Configure Docker
+        uses: docker/setup-docker@v2
+
+      - name: Create back-end env file
+        uses: SpicyPizza/create-envfile@v1.3.1
+        with:
+          envkey_JWT_SECRET: ${{secrets.JWT_SECRET}}
+          envkey_PORT: ${{secrets.PORT}}
+          envkey_POSTGRES_USERNAME: ${{secrets.POSTGRES_USERNAME}}
+          envkey_POSTGRES_PASSWORD: ${{secrets.POSTGRES_PASSWORD}}
+          envkey_POSTGRES_DATABASE: ${{secrets.POSTGRES_DATABASE}}
+          envkey_DATABASE_URL: ${{secrets.DATABASE_URL}}
+          file_name: .env
+          fail_on_empty: true
+
+      - name: Build and push Docker image
+        run: |
+          docker build -t gcr.io/your-project-id/fullstack/backend .
+          docker push gcr.io/your-project-id/fullstack/backend
+
+      - name: Deploy to Google Cloud Run
+        run: |
+          gcloud run deploy backend-app \
+            --image gcr.io/your-project-id/fullstack/backend \
+            --platform managed \
+            --region your-region \
+            --allow-unauthenticated
