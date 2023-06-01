@@ -104,6 +104,7 @@ async function checkChangeAvailability(user_id: number, changeValue: number) {
       changeDetails.push({
         quantity: maxCount,
         amount: cashItem.value * maxCount,
+        value: cashItem.value,
         cash_item_id: cashItem.id,
         transaction_type: 'OUTFLOW',
         user_id,
@@ -134,7 +135,23 @@ export async function createChange(user_id: number, data: CreateChangeAvailabili
   const changeValue = data.total_paid - data.total_price;
 
   const changeDetails = await checkChangeAvailability(user_id, changeValue);
-  await cashRegisterRepository.createMany(changeDetails);
+  const createCashRegister: CreateCashRegister[] = changeDetails.map((item) => {
+    const { value, ...createCashRegister } = item;
+    return createCashRegister;
+  });
+
+  const inflowCash = data.cash_register.map((item) => {
+    return {
+      ...item,
+      user_id: user_id,
+    };
+  });
+
+  inflowCash.forEach((item) => {
+    createCashRegister.push(item);
+  });
+
+  await cashRegisterRepository.createMany(createCashRegister);
 
   return changeDetails;
 }

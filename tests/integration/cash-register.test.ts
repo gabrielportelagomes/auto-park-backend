@@ -227,7 +227,7 @@ describe('GET /cash-register/balance', () => {
   });
 });
 
-describe('POST /cash-registe/change', () => {
+describe('POST /cash-register/change', () => {
   it('should respond with status 401 if no token is given', async () => {
     const response = await server.post('/cash-register/change');
 
@@ -387,6 +387,7 @@ describe('POST /cash-registe/change', () => {
           cash_item_id: expect.any(Number),
           transaction_type: 'OUTFLOW',
           user_id: user.id,
+          value: expect.any(Number),
         },
       ]);
     });

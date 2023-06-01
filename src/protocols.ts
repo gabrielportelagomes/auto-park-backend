@@ -78,6 +78,7 @@ export type CreateChangeAvailabilityParams = {
 export type ChangeDetails = Omit<CreateCashRegisterParams, 'transaction_type'> & {
   transaction_type: 'OUTFLOW';
   user_id: number;
+  value: number;
 };
 
 export type CreateVehicleTypeParams = {
