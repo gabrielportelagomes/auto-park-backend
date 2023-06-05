@@ -12,7 +12,6 @@ export async function createVehicleRegister(
   await validateVehicleType(vehicle_type_id);
 
   const entry_time: Date = new Date();
-  entry_time.setHours(entry_time.getHours() - 3);
 
   const vehicleRegister = await vehicleRegisterRepository.create({
     user_id,
@@ -98,12 +97,15 @@ async function updateVehicleRegister(user_id: number, id: number) {
   }
 
   const exit_time: Date = new Date();
-  exit_time.setHours(exit_time.getHours() - 3);
 
   const entry_time: Date = new Date(register.entry_time);
   const diff = Math.abs(exit_time.getTime() - entry_time.getTime());
   const hours = diff / (1000 * 60 * 60);
-  const paid_amount = Math.round((hours * register.VehicleType.hour_hate) / 5) * 5;
+  let paid_amount = Math.round((hours * register.VehicleType.hour_hate) / 5) * 5;
+
+  if (paid_amount < register.VehicleType.hour_hate) {
+    paid_amount = register.VehicleType.hour_hate;
+  }
 
   const registerUpdated = vehicleRegisterRepository.update(id, { user_id, exit_time, paid_amount });
 
