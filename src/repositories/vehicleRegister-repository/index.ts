@@ -55,6 +55,7 @@ async function update(id: number, data: UpdateVehicleRegister) {
   return await prisma.vehicleRegister.update({
     where: { id },
     data,
+    include: { VehicleType: true },
   });
 }
 
