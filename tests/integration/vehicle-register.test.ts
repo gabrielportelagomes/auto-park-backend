@@ -483,6 +483,14 @@ describe('PATCH /vehicle-register/:id', () => {
         user_id: vehicleRegister.user_id,
         created_at: vehicleRegister.created_at.toISOString(),
         updated_at: expect.any(String),
+        VehicleType: {
+          id: vehicleType.id,
+          vehicle_type: vehicleType.vehicle_type,
+          hour_hate: vehicleType.hour_hate,
+          user_id: vehicleType.user_id,
+          created_at: vehicleType.created_at.toISOString(),
+          updated_at: vehicleType.updated_at.toISOString(),
+        },
       });
     });
   });
